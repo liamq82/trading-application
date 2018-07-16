@@ -1,0 +1,11 @@
+<h1>Cusips</h1>
+<table>
+  <tr>
+    <th>CUSIP ID</th>
+    <th>Description</th>
+  </tr>
+  <tr *ngFor="let cusip of cusips">
+    <td>{{cusip.cusipId}}</td>
+    <td>{{cusip.description}}</td>
+  </tr>
+</table>
