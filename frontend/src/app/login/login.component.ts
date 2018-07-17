@@ -26,7 +26,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted = true;
-    this.message = 'logging in....'
+    this.message = 'logging in....';
     this.authService.login(this.user).subscribe(() => {
       if (this.authService.isLoggedIn) {
         // Get the redirect URL from our auth service
