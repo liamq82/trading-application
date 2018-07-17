@@ -32,13 +32,6 @@ cusipRouter = require('./Routes/cusipsRoutes')(Cusip)
 userRegistrationRouter = require('./Routes/userRegistrationRouter')(User, jwt)
 loginRouter = require('./Routes/loginRouter')(User, jwt, bcrypt)
 
-// app.use(function (req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
-//     next();
-// });
-
 app.use('/api', authRouter)
 app.use('/api/Cusips', cusipRouter)
 app.use('/auth/register', userRegistrationRouter)
