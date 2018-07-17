@@ -49,31 +49,26 @@ describe('LoginComponent', () => {
     emailInput = fixture.nativeElement.querySelector('#email')
     passwordInput = fixture.nativeElement.querySelector('#password')
     loginButton = fixture.nativeElement.querySelector('button')
+    component = fixture.componentInstance;
   }));
 
   it('should navigate to home page on successful login', () => {
     fixture.componentInstance.onSubmit()
 
+  });
+
+  it('should call login function when onSubmit function called', function () {
+    component.onSubmit();
+
+    expect(component.submitted).toBeTruthy()
+    expect(component.message).toEqual('logging in....');
+    expect(authFunctionSpy).toHaveBeenCalled();
   })
 
-  it('should log in', function () {
-    fixture.componentInstance.onSubmit()
+  it('should log in when user clicks login button', () => {
+    login('john@gmail.com', '12345');
 
-    expect(fixture.componentInstance.token).toEqual(({ token: '12345' }))
-    expect(loginFunctionSpy).toHaveBeenCalled()
-  })
-
-  it('should log in with user email and password', () => {
-
-    emailInput.value = 'john@gmail.com';
-    emailInput.dispatchEvent(newEvent('input'));
-    passwordInput.value = '12345';
-    passwordInput.dispatchEvent(newEvent('input'));
-    fixture.detectChanges();
-    loginButton.click()
-
-    expect(fixture.componentInstance.token).toEqual(({ token: '12345' }))
-    expect(loginFunctionSpy).toHaveBeenCalledWith(new User('john@gmail.com', '12345'))
+    expect(authFunctionSpy).toHaveBeenCalledWith(new User('john@gmail.com', '12345'));
   })
 
   it('should create the app', async(() => {
@@ -94,31 +89,27 @@ describe('LoginComponent', () => {
     let loginButton = fixture.nativeElement.querySelector('button')
 
     expect(loginButton.disabled).toBeTruthy();
-  })
+  });
 
   it('should enable login button when email and password entered', function () {
-    emailInput.value = 'green';
-    emailInput.dispatchEvent(newEvent('input'));
-    passwordInput.value = 'green';
-    passwordInput.dispatchEvent(newEvent('input'));
-    fixture.detectChanges();
+    enterEmailAndPassword('green', 'green');
 
     expect(loginButton.disabled).toBeFalsy()
-  })
+  });
 
   it('should highlight email input with red if value not entered', function () {
-    fixture.detectChanges()
-    let emailInputClassList = fixture.nativeElement.querySelector('#email').classList
+    fixture.detectChanges();
+    const emailInputClassList = fixture.nativeElement.querySelector('#email').classList;
 
-    expect(emailInputClassList.contains('ng-invalid')).toBeTruthy()
-  })
+    expect(emailInputClassList.contains('ng-invalid')).toBeTruthy();
+  });
 
   it('should highlight password input with red if value not entered', function () {
-    fixture.detectChanges()
-    let passwordInputClassList = fixture.nativeElement.querySelector('#password').classList
+    fixture.detectChanges();
+    const passwordInputClassList = fixture.nativeElement.querySelector('#password').classList;
 
-    expect(passwordInputClassList.contains('ng-invalid')).toBeTruthy()
-  })
+    expect(passwordInputClassList.contains('ng-invalid')).toBeTruthy();
+  });
 
   it('should highlight password input with green if value  entered', function () {
     passwordInput.value = 'abc123';
@@ -138,9 +129,44 @@ describe('LoginComponent', () => {
 
     expect(emailInputClassList.contains('ng-valid')).toBeTruthy()
     expect(emailInputClassList.contains('ng-invalid')).toBeFalsy()
-  })
+  });
+
+  /**
+   * Enter email and password into form and click login button.
+   *
+   * @param email
+   * @param password
+   */
+  function login(email: string, password: string) {
+    emailInput.value = email;
+    emailInput.dispatchEvent(newEvent('input'));
+
+    passwordInput.value = password;
+    passwordInput.dispatchEvent(newEvent('input'));
+
+    fixture.detectChanges();
+
+    loginButton.click();
+  }
+
+  /**
+   * Enter email and password into login form.
+   *
+   * @param email
+   * @param password
+   */
+  function enterEmailAndPassword(email: string, password: string) {
+    emailInput.value = email;
+    emailInput.dispatchEvent(newEvent('input'));
+
+    passwordInput.value = password;
+    passwordInput.dispatchEvent(newEvent('input'));
+
+    fixture.detectChanges();
+  }
 
 });
+
 
 function newEvent(eventName: string, bubbles = false, cancelable = false) {
   let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'

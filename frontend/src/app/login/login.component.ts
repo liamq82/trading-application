@@ -14,14 +14,14 @@ const UNAUTHORIZED_PAGE = '/login/unauthorized'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  title = 'login'
-  user: User
+  title = 'login';
+  user: User;
   submitted = false;
-  token: object
-  message = ''
+  token: object;
+  message = '';
 
   constructor(public authService: AuthService, public router: Router, private loginService: LoginService) {
-    this.user = new User('', '')
+    this.user = new User('', '');
   }
 
   onSubmit() {
